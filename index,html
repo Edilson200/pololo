@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test de Selección Múltiple</title>
+    <style>
+        /* Estilos CSS */
+body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            text-decoration: line-through;
+        }
+        .correct::before {
+            content: "✓ ";
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test de Selección Múltiple</h1>
+
+        <div class="question">
+            <h2>Pregunta 1</h2>
+            <div class="options">
+                <label><input type="radio" name="q1" value="a">Opcion A</label>
+                <label><input type="radio" name="q1" value="b"> Opción B</label>
+                <label><input type="radio" name="q1" value="c"> Opción C</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <h2>Pregunta 2</h2>
+            <div class="options">
+                <label><input type="radio" name="q2" value="a"> Opción A</label>
+                <label><input type="radio" name="q2" value="b"> Opción B</label>
+                <label><input type="radio" name="q2" value="c"> Opción C</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <h2>Pregunta 3</h2>
+            <div class="options">
+                <label><input type="radio" name="q3" value="a"> Opción A</label>
+                <label><input type="radio" name="q3" value="b"> Opción B</label>
+                <label><input type="radio" name="q3" value="c"> Opción C</label>
+            </div>
+        </div>
+
+        <button onclick="calcularResultado()">Finalizar</button>
+
+        <div id="resultado" class="result"></div>
+    </div>
+
+    <script>
+        function shuffleOptions() {
+            var questions = document.getElementsByClassName('question');
+
+            for (let i = 0; i < questions.length; i++) {
+                var options = questions[i].querySelectorAll('.options label');
+
+                for (let j = options.length - 1; j > 0; j--) {
+                    const k = Math.floor(Math.random() * (j + 1));
+                    options[j].parentNode.insertBefore(options[k], options[j]);
+                }
+            }
+        }
+
+        function calcularResultado() {
+            var respuestasCorrectas = 0;
+            var opcionesCorrectas = {
+                q1: "b",
+                q2: "a",
+                q3: "c"
+            };
+
+            // Obtener respuestas seleccionadas
+            var respuestasQ1 = document.getElementsByName("q1");
+            var respuestasQ2 = document.getElementsByName("q2");
+            var respuestasQ3 = document.getElementsByName("q3");
+
+            // Verificar respuestas y contar aciertos
+            if (respuestasQ1[1].checked && respuestasQ1[1].value === opcionesCorrectas.q1) {
+                respuestasCorrectas++;
+                respuestasQ1[1].parentNode.classList.add("correct");
+            } else {
+                respuestasQ1[0].parentNode.classList.add("incorrect");
+                respuestasQ1[2].parentNode.classList.add("incorrect");
+                respuestasQ1[opcionesCorrectas.q1.charCodeAt(0) - 97].parentNode.classList.add("correct");
+            }
+            if (respuestasQ2[0].checked && respuestasQ2[0].value === opcionesCorrectas.q2) {
+                respuestasCorrectas++;
+                respuestasQ2[0].parentNode.classList.add("correct");
+            } else {
+                respuestasQ2[1].parentNode.classList.add("incorrect");
+                respuestasQ2[2].parentNode.classList.add("incorrect");
+                respuestasQ2[opcionesCorrectas.q2.charCodeAt(0) - 97].parentNode.classList.add("correct");
+            }
+            if (respuestasQ3[2].checked && respuestasQ3[2].value === opcionesCorrectas.q3) {
+                respuestasCorrectas++;
+                respuestasQ3[2].parentNode.classList.add("correct");
+            } else {
+                respuestasQ3[0].parentNode.classList.add("incorrect");
+                respuestasQ3[1].parentNode.classList.add("incorrect");
+                respuestasQ3[opcionesCorrectas.q3.charCodeAt(0) - 97].parentNode.classList.add("correct");
+            }
+
+            // Mostrar resultados
+            var resultadoElement = document.getElementById("resultado");
+            resultadoElement.innerHTML = "Respuestas correctas: " + respuestasCorrectas;
+        }
+
+        window.onload = function() {
+            shuffleOptions();
+        };
+    </script>
+</body>
+</html>
